@@ -964,27 +964,24 @@ namespace RenderOrderClient
                     int TitleLenght = 53;
                     if (Title.Length <= TitleLenght * 2)
                     {
-
-
                         dataGridView1.SelectedRows[0].Cells[0].Value = Title;
                         if (dataGridView1.SelectedRows[0].Cells[2].Value.ToString() == "0")
                         {
                             Rectangle cropRect = new Rectangle();
-                            cropRect.Width = 1000;
-                            cropRect.Height = 600;
+                            cropRect.Width = 1920;
+                            cropRect.Height = 1080;
                             Bitmap src = (Bitmap)dataGridView1.SelectedRows[0].Cells[1].Value;
                             Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
 
                             using (Graphics g = Graphics.FromImage(target))
                             {
-                                g.DrawImage(src, new Rectangle(0, 0, 1000, 600),
+                                g.DrawImage(src, new Rectangle(0, 0, 1920, 1080),
                                                  drawRect,
                                                  GraphicsUnit.Pixel);
                                 dataGridView1.SelectedRows[0].Cells[1].Value = target;
                             }
                             dataGridView1.SelectedRows[0].Cells[2].Value = "1";
                             dataGridView1_SelectionChanged(new object(), new EventArgs());
-
                         }
                     }
                     else
