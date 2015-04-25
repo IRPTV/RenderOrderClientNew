@@ -546,7 +546,7 @@ namespace RenderOrderClient
                     for (int i = 0; i < FwnDgv.Rows.Count; i++)
                     {
                         Bitmap Img = new Bitmap((Bitmap)FwnDgv.Rows[i].Cells[4].Value);
-                        Img.Save(localPath + "\\" + (i + 1) + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                        Img.Save(localPath + "\\" + (i + 1).ToString("00") + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
                         Img.Dispose();
                         Str.AppendLine(" News" + (i + 1) + "= [\"" + FwnDgv.Rows[i].Cells[3].Value.ToString().ToUpper() + "\",\"" + DateTime.Parse(FwnDgv.Rows[i].Cells[1].Value.ToString()).ToString("yyyy/MM/dd") + "\"]");
                     }
@@ -928,7 +928,7 @@ namespace RenderOrderClient
                     for (int i = 0; i < dataGridView1.Rows.Count; i++)
                     {
                         Bitmap Img = new Bitmap((Bitmap)dataGridView1.Rows[i].Cells[1].Value);
-                        Img.Save(localPath + "\\" + (i + 1) + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                        Img.Save(localPath + "\\" + (i + 1).ToString("00") + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
                         Img.Dispose();
                         Str.AppendLine("News" + (i + 1).ToString() + "= \"" + dataGridView1.Rows[i].Cells[0].Value.ToString().Trim() + "\"");
                     }

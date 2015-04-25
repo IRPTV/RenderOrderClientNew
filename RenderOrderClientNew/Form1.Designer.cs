@@ -67,7 +67,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -75,6 +74,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabPage2.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -376,9 +376,9 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.FwnDgv);
-            this.groupBox3.Location = new System.Drawing.Point(6, 242);
+            this.groupBox3.Location = new System.Drawing.Point(6, 213);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(765, 470);
+            this.groupBox3.Size = new System.Drawing.Size(765, 499);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Records";
@@ -408,7 +408,7 @@
             this.FwnDgv.RowHeadersVisible = false;
             this.FwnDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.FwnDgv.ShowEditingIcon = false;
-            this.FwnDgv.Size = new System.Drawing.Size(759, 451);
+            this.FwnDgv.Size = new System.Drawing.Size(759, 480);
             this.FwnDgv.TabIndex = 0;
             this.FwnDgv.SelectionChanged += new System.EventHandler(this.FwnDgv_SelectionChanged);
             this.FwnDgv.DragDrop += new System.Windows.Forms.DragEventHandler(this.FwnDgv_DragDrop);
@@ -483,7 +483,7 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.groupBox2.Location = new System.Drawing.Point(301, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(458, 227);
+            this.groupBox2.Size = new System.Drawing.Size(458, 201);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Content";
@@ -493,7 +493,7 @@
             this.button1.BackColor = System.Drawing.Color.Red;
             this.button1.Font = new System.Drawing.Font("Arial Black", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(10, 189);
+            this.button1.Location = new System.Drawing.Point(12, 162);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(439, 32);
             this.button1.TabIndex = 8;
@@ -549,14 +549,6 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Title:";
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(13, 76);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(189, 42);
-            this.textBox1.TabIndex = 1;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -572,7 +564,7 @@
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(8, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(287, 230);
+            this.groupBox1.Size = new System.Drawing.Size(287, 172);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Image";
@@ -583,7 +575,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(3, 16);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(281, 211);
+            this.pictureBox1.Size = new System.Drawing.Size(281, 153);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -595,7 +587,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(281, 211);
+            this.panel1.Size = new System.Drawing.Size(281, 153);
             this.panel1.TabIndex = 0;
             this.panel1.Visible = false;
             this.panel1.Click += new System.EventHandler(this.panel1_Click);
@@ -628,6 +620,14 @@
             this.openFileDialog2.FileName = "openFileDialog1";
             this.openFileDialog2.Filter = "Image Files (JPEG,GIF,BMP,PNG)|*.jpg;*.jpeg;*.gif;*.bmp;*.png;";
             this.openFileDialog2.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog2_FileOk);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(13, 76);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(189, 42);
+            this.textBox1.TabIndex = 1;
             // 
             // Form1
             // 
@@ -678,7 +678,6 @@
         // private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label3;
@@ -716,6 +715,7 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.TextBox textBox1;
 
     }
 }
