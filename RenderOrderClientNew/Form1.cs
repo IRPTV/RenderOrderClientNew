@@ -385,14 +385,14 @@ namespace RenderOrderClient
                             if (FwnDgv.SelectedRows[0].Cells[6].Value.ToString() == "0")
                             {
                                 Rectangle cropRect = new Rectangle();
-                                cropRect.Width = 859;
-                                cropRect.Height = 688;
+                                cropRect.Width = 1920;
+                                cropRect.Height = 1080;
                                 Bitmap src = (Bitmap)FwnDgv.SelectedRows[0].Cells[4].Value;
                                 Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
 
                                 using (Graphics g = Graphics.FromImage(target))
                                 {
-                                    g.DrawImage(src, new Rectangle(0, 0, 859, 688),
+                                    g.DrawImage(src, new Rectangle(0, 0, 1920, 1080),
                                                      drawRect,
                                                      GraphicsUnit.Pixel);
                                     FwnDgv.SelectedRows[0].Cells[4].Value = target;
@@ -520,118 +520,46 @@ namespace RenderOrderClient
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             try
             {
-                int TitleFontSize = 60;
-
-                int NewsFontSize = 50;
-
-                bool AddToQueue = true;
-                string[] DirQeue = Directory.GetDirectories("\\\\192.168.20.48\\input$\\FWN\\");
-                if (DirQeue.Length > 0)
+                string serverIp = ConfigurationSettings.AppSettings["ServerIp"].ToString().Trim();
+                bool AllInserted = true;
+                for (int i = 0; i < FwnDgv.Rows.Count; i++)
                 {
-                    string DirQeueList = "";
-                    for (int i = 0; i < DirQeue.Length; i++)
+                    AllInserted = true;
+                    if (FwnDgv.Rows[i].Cells[6].Value.ToString() != "1")
                     {
-                        DirQeueList += "\r\n" + i.ToString() + "-" + DirQeue[i].ToString();
-                    }
-                    DialogResult DlgRes = MessageBox.Show("There are ( " + DirQeue.Length + " ) " + DirQeueList + "\r\n" + "item in the  queue,Are you sure to add this one to render queue?", "Render Queue", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (DlgRes == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        AddToQueue = true;
-                    }
-                    else
-                    {
-                        AddToQueue = false;
+                        AllInserted = false;
+                        MessageBox.Show("Please select a photo for row:# " + (i + 1).ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-
-                if (AddToQueue)
+                if (AllInserted)
                 {
-                    try
+                    //CITY
+                    //FwnDgv.Rows[i].Cells[2].Value.ToString().ToUpper()
+                    string localPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\FWNNEW";
+                    string destDir = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    localPath += "\\" + destDir;
+                    Directory.CreateDirectory(localPath);
+                    StringBuilder Str = new StringBuilder();
+                    for (int i = 0; i < FwnDgv.Rows.Count; i++)
                     {
-                        bool AllInserted = true;
-                        for (int i = 0; i < FwnDgv.Rows.Count; i++)
-                        {
-                            AllInserted = true;
-                            if (FwnDgv.Rows[i].Cells[6].Value.ToString() != "1")
-                            {
-                                AllInserted = false;
-                                MessageBox.Show("Please select a photo for row:# " + (i + 1).ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                        }
-                        if (AllInserted)
-                        {
-                            string Folder = "\\" + string.Format("{0:0000}", DateTime.Now.Year) + "-" + string.Format("{0:00}", DateTime.Now.Month)
-                           + "-" + string.Format("{0:00}", DateTime.Now.Day) + "-" + string.Format("{0:00}", DateTime.Now.Hour)
-                           + "-" + string.Format("{0:00}", DateTime.Now.Minute) + "-" + string.Format("{0:00}", DateTime.Now.Second);
-                            Directory.CreateDirectory("\\\\192.168.20.48\\input$\\FWN" + "\\" + Folder + "\\IMAGES\\");
-                            Directory.CreateDirectory("\\\\192.168.20.48\\input$\\FWN" + "\\" + Folder + "\\TITLES\\");
-                            for (int i = 0; i < FwnDgv.Rows.Count; i++)
-                            {
-
-                                Bitmap Img = new Bitmap((Bitmap)FwnDgv.Rows[i].Cells[4].Value);
-
-                                string SSSS = "\\\\192.168.20.48\\input$\\FWN" +
-                                     "\\" + Folder + "\\IMAGES\\" + (i + 1) + ".jpg";
-                                Img.Save("\\\\192.168.20.48\\input$\\FWN" +
-                                    "\\" + Folder + "\\IMAGES\\" + (i + 1) + ".jpg"
-                                    , System.Drawing.Imaging.ImageFormat.Jpeg);
-                                Img.Dispose();
-
-                                //NEWS
-                                GenerateImage(FwnDgv.Rows[i].Cells[3].Value.ToString().ToUpper(),
-                                   "\\\\192.168.20.48\\input$\\FWN" + "\\" + Folder + "\\TITLES\\News " +
-                                        string.Format("{0:00}", i + 1) + ".png",
-                                    1260, 792, NewsFontSize, "Context Reprise SSi Medium", "#d3d1d9", 39, 35, FontStyle.Bold, true);
-
-                                //CITY
-                                GenerateImage(FwnDgv.Rows[i].Cells[2].Value.ToString().ToUpper(),
-                                   "\\\\192.168.20.48\\input$\\FWN" + "\\" + Folder + "\\TITLES\\City " +
-                                        string.Format("{0:00}", i + 1) + ".png",
-                                   737, 135, TitleFontSize, "Context Reprise ExtraBlack SSi", "#000000", 1, 27, FontStyle.Bold, true);
-
-                                //Date
-                                DateTime DtRw = DateTime.Parse(FwnDgv.Rows[i].Cells[1].Value.ToString());
-                                string DDDD = DtRw.DayOfWeek.ToString() + ", " + DtRw.ToString("m");
-                                GenerateImage(DDDD.ToUpper(),
-                                   "\\\\192.168.20.48\\input$\\FWN" + "\\" + Folder + "\\TITLES\\Date " +
-                                        string.Format("{0:00}", i + 1) + ".png",
-                                   870, 135, TitleFontSize, "Context Reprise ExtraBlack SSi", "#000000", 1, 27, FontStyle.Bold, true);
-                            }
-
-                            //Check Files Here:
-                            try
-                            {
-                                if (Directory.GetFiles("\\\\192.168.20.48\\input$" + "\\" + Folder + "\\TITLES\\", "*.png").Length == FwnDgv.Rows.Count * 3)
-                                {
-                                    MessageBox.Show("Render's order added to FWN queue");
-                                }
-                                else
-                                {
-                                    Directory.Delete("\\\\192.168.20.48\\input$" + "\\" + Folder, true);
-                                    MessageBox.Show("please add to queue again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
-                            catch
-                            {
-
-                                Directory.Delete("\\\\192.168.20.48\\input$" + "\\" + Folder, true);
-                                MessageBox.Show("please add to queue again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                            
-                            //MessageBox.Show("Render order added to FWN queue");
-                        }
+                        Bitmap Img = new Bitmap((Bitmap)FwnDgv.Rows[i].Cells[4].Value);
+                        Img.Save(localPath + "\\" + (i + 1) + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                        Img.Dispose();
+                        Str.AppendLine(" News" + (i + 1) + "= [\"" + FwnDgv.Rows[i].Cells[3].Value.ToString().ToUpper() + "\",\"" + DateTime.Parse(FwnDgv.Rows[i].Cells[1].Value.ToString()).ToString("yyyy/MM/dd") + "\"]");
                     }
-                    catch (Exception Exp)
-                    {
-                        MessageBox.Show(Exp.Message);
-                    }
+                    StreamWriter StrW = new StreamWriter(localPath + "\\FWTNData.xml");
+                    StrW.Write(Str);
+                    StrW.Close();
+                    DirectoryCopy(localPath, "\\\\" + serverIp + "\\input$\\FWNNEW\\" + destDir, false);
+                    MessageBox.Show("Succeed!");
                 }
             }
-            catch (Exception Err)
+            catch (Exception Exp)
             {
-                MessageBox.Show(Err.Message);
+                MessageBox.Show(Exp.Message);
             }
         }
 
@@ -726,7 +654,6 @@ namespace RenderOrderClient
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-
             pictureBox2.Visible = true;
             panel2.Visible = false;
             if (dataGridView1.Rows.Count == 7)
@@ -743,9 +670,6 @@ namespace RenderOrderClient
                             pictureBox2.Visible = true;
                             pictureBox2.Image = (Image)dataGridView1.SelectedRows[0].Cells[1].Value;
                             // pictureBox1.Image = (Image)Image.FromFile(FwnDgv.SelectedRows[0].Cells[5].Value.ToString());
-
-
-
 
                             string OutLine1 = "";
                             string OutLine2 = "";
@@ -774,29 +698,7 @@ namespace RenderOrderClient
                                         }
                                     }
                                 }
-
                             }
-                            pictureBox3.Image = (Image)GenerateImage(OutLine1.ToUpper(), "FILENAME",
-                             1920, 57, FontSize, "Context Reprise SSi Black", "#ffffff", 100, 10, FontStyle.Bold, false);
-
-                            pictureBox4.Image = GenerateImage(OutLine2.ToUpper(), "FILENAME",
-                                  1920, 57, FontSize, "Context Reprise SSi Black", "#ffffff", 100, 10, FontStyle.Bold, false);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         }
                         else
                         {
@@ -810,7 +712,6 @@ namespace RenderOrderClient
                     {
                         openFileDialog2.ShowDialog();
                     }
-
                 }
             }
         }
@@ -994,9 +895,7 @@ namespace RenderOrderClient
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //textBox2.MaxLength = int.Parse(ConfigurationSettings.AppSettings["StillsTitleLenght"].ToString().Trim()) * 2;
-            //textBox1.MaxLength = int.Parse(ConfigurationSettings.AppSettings["FwnTitleLenght"].ToString().Trim());
-            // richTextBox1.MaxLength = int.Parse(ConfigurationSettings.AppSettings["FwnNewsLenght"].ToString().Trim());
+            string serverIp = ConfigurationSettings.AppSettings["ServerIp"].ToString().Trim();
             try
             {
                 bool AllInserted = true;
@@ -1014,116 +913,82 @@ namespace RenderOrderClient
                     string Folder = "";
                     if (radioButton1.Checked)
                     {
-                        Folder = "POLITIC";
+                        Folder = "POLITICNEW";
                     }
                     if (radioButton2.Checked)
                     {
-                        Folder = "SPORT";
+                        Folder = "SPORTNEW";
                     }
-                    Directory.CreateDirectory("\\\\192.168.20.48\\input$" + "\\" + Folder);
-                    bool AddToQueue = true;
-                    string[] DirQeue = Directory.GetDirectories("\\\\192.168.20.48\\input$" + "\\" + Folder);
-                    if (DirQeue.Length > 0)
+
+                    string localPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\" + Folder;
+                    string destDir = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    localPath += "\\" + destDir;
+                    Directory.CreateDirectory(localPath);
+                    StringBuilder Str = new StringBuilder();
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
                     {
-                        string DirQeueList = "";
-                        for (int i = 0; i < DirQeue.Length; i++)
-                        {
-                            DirQeueList += "\r\n" + i.ToString() + "-" + DirQeue[i].ToString();
-                        }
-                        DialogResult DlgRes = MessageBox.Show("There are ( " + DirQeue.Length + " ) " + DirQeueList + "\r\n" + "item in the  queue,Are you sure to add this one to render queue?", "Render Queue", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (DlgRes == System.Windows.Forms.DialogResult.Yes)
-                        {
-                            AddToQueue = true;
-                        }
-                        else
-                        {
-                            AddToQueue = false;
-                        }
+                        Bitmap Img = new Bitmap((Bitmap)dataGridView1.Rows[i].Cells[1].Value);
+                        Img.Save(localPath + "\\" + (i + 1) + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                        Img.Dispose();
+                        Str.AppendLine("News" + (i + 1).ToString() + "= \"" + dataGridView1.Rows[i].Cells[0].Value.ToString().Trim() + "\"");
                     }
-
-                    if (AddToQueue)
-                    {
-                        Folder += "\\" + string.Format("{0:0000}", DateTime.Now.Year) + "-" + string.Format("{0:00}", DateTime.Now.Month)
-                            + "-" + string.Format("{0:00}", DateTime.Now.Day) + "-" + string.Format("{0:00}", DateTime.Now.Hour)
-                            + "-" + string.Format("{0:00}", DateTime.Now.Minute) + "-" + string.Format("{0:00}", DateTime.Now.Second);
-                        Directory.CreateDirectory("\\\\192.168.20.48\\input$" + "\\" + Folder + "\\IMAGES\\");
-                        Directory.CreateDirectory("\\\\192.168.20.48\\input$" + "\\" + Folder + "\\TITLES\\");
-                        int TitleLenght = 53;
-                        int FontSize = 38;
-                        for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                        {
-                            Bitmap Img = new Bitmap((Bitmap)dataGridView1.Rows[i].Cells[1].Value);
-                            // string tttt = ConfigurationSettings.AppSettings["StillsImagePathTitle"].ToString().Trim() + "\\" + Folder + "\\IMAGES\\" + i+1 + ".png";
-                            Img.Save("\\\\192.168.20.48\\input$" + "\\" + Folder + "\\IMAGES\\" + (i + 1) + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-                            Img.Dispose();
-
-                            string OutLine1 = "";
-                            string OutLine2 = "";
-                            string Title = dataGridView1.Rows[i].Cells[0].Value.ToString().Trim();
-
-                            if (Title.Length <= TitleLenght * 2)
-                            {
-                                char[] delimiters = new char[] { ' ' };
-                                string[] PrgNameList = Title.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-                                int CutIndex = 0;
-                                foreach (string item in PrgNameList)
-                                {
-                                    if (CutIndex + item.Length + 1 <= TitleLenght)
-                                    {
-                                        CutIndex += item.Length + 1;
-                                        OutLine1 += item + " ";
-                                    }
-                                    else
-                                    {
-                                        if (CutIndex + item.Length + 1 <= TitleLenght * 2)
-                                        {
-                                            CutIndex += item.Length + 1;
-                                            OutLine2 += item + " ";
-                                        }
-                                    }
-                                }
-
-                            }
-                            GenerateImage(OutLine1.ToUpper(),
-                             "\\\\192.168.20.48\\input$" + "\\" + Folder + "\\TITLES\\" +
-                             string.Format("{0:00}", i + 1) + ".png",
-                             1920, 57, FontSize, "Context Reprise SSi Black", "#ffffff", 100, 10, FontStyle.Bold, true);
-
-                            GenerateImage(OutLine2.ToUpper(),
-                               "\\\\192.168.20.48\\input$" + "\\" + Folder + "\\TITLES\\" +
-                                string.Format("{0:00}", i + 1) + "-2.png",
-                                1920, 57, FontSize, "Context Reprise SSi Black", "#ffffff", 100, 10, FontStyle.Bold, true);
-                        }
-                        //Check Files Here:
-                        try
-                        {
-                            if (Directory.GetFiles("\\\\192.168.20.48\\input$" + "\\" + Folder + "\\TITLES\\", "*.png").Length == dataGridView1.Rows.Count * 2
-                           && Directory.GetFiles("\\\\192.168.20.48\\input$" + "\\" + Folder + "\\IMAGES\\", "*.jpg").Length == dataGridView1.Rows.Count)
-                            {
-                                MessageBox.Show("Render's order added to Stills queue");
-                            }
-                            else
-                            {
-                                Directory.Delete("\\\\192.168.20.48\\input$" + "\\" + Folder, true);
-                                MessageBox.Show("please add to queue again!", "Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                            }
-                        }
-                        catch 
-                        {
-
-
-                            Directory.Delete("\\\\192.168.20.48\\input$" + "\\" + Folder, true);
-                            MessageBox.Show("please add to queue again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                       
-                    }
+                    StreamWriter StrW = new StreamWriter(localPath + "\\NSData.xml");
+                    StrW.Write(Str);
+                    StrW.Close();
+                    DirectoryCopy(localPath, "\\\\" + serverIp + "\\input$\\" + Folder + "\\" + destDir, false);
+                    MessageBox.Show("Succeed!");
                 }
             }
             catch (Exception EXP)
             {
                 MessageBox.Show(EXP.Message);
             }
+        }
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
 
+            // If the source directory does not exist, throw an exception.
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            // If the destination directory does not exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+
+            // Get the file contents of the directory to copy.
+            FileInfo[] files = dir.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                // Create the path to the new copy of the file.
+                string temppath = Path.Combine(destDirName, file.Name);
+
+                // Copy the file.
+                file.CopyTo(temppath, false);
+            }
+
+            // If copySubDirs is true, copy the subdirectories.
+            if (copySubDirs)
+            {
+
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    // Create the subdirectory.
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+
+                    // Copy the subdirectories.
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
         }
     }
 }
