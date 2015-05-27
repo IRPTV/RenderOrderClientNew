@@ -548,7 +548,7 @@ namespace RenderOrderClient
                         Bitmap Img = new Bitmap((Bitmap)FwnDgv.Rows[i].Cells[4].Value);
                         Img.Save(localPath + "\\" + (i + 1).ToString("00") + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
                         Img.Dispose();
-                        Str.AppendLine(" News" + (i + 1) + "= [\"" + FwnDgv.Rows[i].Cells[3].Value.ToString().ToUpper() + "\",\"" + DateTime.Parse(FwnDgv.Rows[i].Cells[1].Value.ToString()).ToString("yyyy.MM.dd") + "\"]");
+                        Str.AppendLine(" News" + (i + 1) + "= [\"" + FwnDgv.Rows[i].Cells[3].Value.ToString().ToUpper() + "\",\"" + DateTime.Parse(FwnDgv.Rows[i].Cells[1].Value.ToString()).ToString("yy.MM.dd") + "\"]");
                     }
                     StreamWriter StrW = new StreamWriter(localPath + "\\FWTNData.xml");
                     StrW.Write(Str);
