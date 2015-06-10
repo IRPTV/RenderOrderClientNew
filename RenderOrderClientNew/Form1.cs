@@ -930,7 +930,7 @@ namespace RenderOrderClient
                         Bitmap Img = new Bitmap((Bitmap)dataGridView1.Rows[i].Cells[1].Value);
                         Img.Save(localPath + "\\" + (i + 1).ToString("00") + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
                         Img.Dispose();
-                        Str.AppendLine("News" + (i + 1).ToString() + "= \"" + dataGridView1.Rows[i].Cells[0].Value.ToString().Trim() + "\"");
+                        Str.AppendLine("News" + (i + 1).ToString() + "= \"" + dataGridView1.Rows[i].Cells[0].Value.ToString().Trim().Replace("\r", "").Replace("\n", "") + "\"");
                     }
                     StreamWriter StrW = new StreamWriter(localPath + "\\NSData.xml");
                     StrW.Write(Str);
