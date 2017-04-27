@@ -919,6 +919,10 @@ namespace RenderOrderClient
                     {
                         Folder = "SPORTNEW";
                     }
+                    if (radioButton3.Checked)
+                    {
+                        Folder = "ELECTION";
+                    }
 
                     string localPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\" + Folder;
                     string destDir = DateTime.Now.ToString("yyyyMMddHHmmss");
